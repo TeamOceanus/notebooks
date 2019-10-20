@@ -34,15 +34,15 @@ for x in range(0, 360):
             continue
         for i in range(8):
             if 2 * np.pi / 8 * i <= deg[x,y] < 2 * np.pi * (i + 1):
-                nextx, nexty = grid_coord(x, y)
-                nextx += dx[i]
-                nexty += dy[i]
+                gridx, gridy = grid_coord(x, y)
+                nextx = gridx + dx[i]
+                nexty = gridy + dy[i]
                 if not in_range(nextx, nexty):
                     continue
-                if ((x, y), (nextx, nexty)) not in edges_dict:
-                    edges_dict[((x, y), (nextx, nexty))] = 1
+                if ((gridx, gridy), (nextx, nexty)) not in edges_dict:
+                    edges_dict[((gridx, gridy), (nextx, nexty))] = 1
                 else:
-                    edges_dict[((x, y), (nextx, nexty))] += 1
+                    edges_dict[((gridx, gridy), (nextx, nexty))] += 1
 
 ebunch = [key + ({'capacity': val},) for key, val in edges_dict.items()]
 print(ebunch)
@@ -57,6 +57,6 @@ for key, val in centrality.items():
         for y in range(key[1], key[1] + 5):
             centrality_map[x][y] = val
 
-plt.figure()
-plt.imshow(centrality_map)
+plt.figure(figsize=(18, 8))
+plt.imshow(centrality_map.swapaxes(1, 0))
 plt.show()
